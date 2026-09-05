@@ -1,0 +1,43 @@
+{
+	"$schema": "https://opencode.ai/config.json",
+	"mcp": {
+		"coolify": {
+			"type": "remote",
+			"url": "{env:COOLIFY_MCP_URL}",
+			"enabled": true,
+			"headers": {
+				"Authorization": "Bearer {env:COOLIFY_TOKEN}"
+			}
+		},
+		"ssh": {
+			"type": "local",
+			"command": ["ssh-mcp"],
+			"enabled": true
+		},
+		"docker": {
+			"type": "local",
+			"command": ["mcp-docker-server"],
+			"enabled": true
+		},
+		"truenas": {
+			"type": "local",
+			"command": ["truenas-mcp-server"],
+			"environment": {
+				"TRUENAS_URL": "{env:TRUENAS_URL}",
+				"TRUENAS_API_KEY": "{env:TRUENAS_API_KEY}",
+				"TRUENAS_VERIFY_SSL": "true"
+			},
+			"enabled": true
+		},
+		"ha": {
+			"type": "local",
+			"command": ["ha-mcp"],
+			"environment": {
+				"HA_MCP_URL": "{env:HA_MCP_URL}",
+				"HA_MCP_TOKEN": "{env:HA_TOKEN}",
+				"HA_MCP_TIMEZONE": "Europe/Berlin"
+			},
+			"enabled": true
+		}
+	}
+}

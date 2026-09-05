@@ -1,0 +1,26 @@
+{
+	"$schema": "https://opencode.ai/config.json",
+	"mcp": {
+		"github": {
+			"type": "local",
+			"command": ["mcp-github"],
+			"environment": {
+				"GITHUB_TOKEN": "{env:GITHUB_TOKEN}"
+			},
+			"enabled": true
+		},
+		"docker": {
+			"type": "local",
+			"command": ["mcp-docker-server"],
+			"enabled": true
+		},
+		"coolify": {
+			"type": "remote",
+			"url": "{env:COOLIFY_MCP_URL}",
+			"enabled": true,
+			"headers": {
+				"Authorization": "Bearer {env:COOLIFY_TOKEN}"
+			}
+		}
+	}
+}

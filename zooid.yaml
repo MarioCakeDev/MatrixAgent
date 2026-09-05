@@ -1,0 +1,92 @@
+# Zooid daemon configuration — Ticket 07
+# Deployment: Coolify worker (Home Worker 01)
+# Transport: appservice mode, Synapse via Traefik
+
+workstation: agent
+runtime: docker
+
+transports:
+  matrix:
+    homeserver: https://matrix.mariocake.de
+    mode: appservice
+    advertise_url: http://zooid.coolify.lan
+    user_namespace: "@agent.*:mariocake.de"
+    space: zooid
+
+container:
+  image: ghcr.io/zooid-ai/agent-opencode:latest
+
+agents:
+  dev:
+    acp:
+      preset: opencode
+    workdir: agents/dev
+    container:
+      env:
+        GITHUB_TOKEN: ${GITHUB_TOKEN}
+        COOLIFY_TOKEN: ${COOLIFY_TOKEN}
+        COOLIFY_MCP_URL: ${COOLIFY_MCP_URL}
+    matrix:
+      display_name: Dev
+      rooms:
+        - "#dev"
+        - "#handoffs"
+      trigger: mention
+
+  infra:
+    acp:
+      preset: opencode
+    workdir: agents/infra
+    container:
+      env:
+        COOLIFY_TOKEN: ${COOLIFY_TOKEN}
+        COOLIFY_MCP_URL: ${COOLIFY_MCP_URL}
+        HA_TOKEN: ${HA_TOKEN}
+        HA_MCP_URL: ${HA_MCP_URL}
+        TRUENAS_URL: ${TRUENAS_URL}
+        TRUENAS_API_KEY: ${TRUENAS_API_KEY}
+    matrix:
+      display_name: Infra
+      rooms:
+        - "#infra"
+        - "#handoffs"
+      trigger: mention
+
+  smarthome:
+    acp:
+      preset: opencode
+    workdir: agents/smarthome
+    container:
+      env:
+        HA_TOKEN: ${HA_TOKEN}
+        HA_MCP_URL: ${HA_MCP_URL}
+    matrix:
+      display_name: "Smart Home"
+      rooms:
+        - "#home"
+        - "#handoffs"
+      trigger: mention
+
+  orchestrator:
+    acp:
+      preset: opencode
+    workdir: agents/orchestrator
+    matrix:
+      display_name: Orchestrator
+      rooms:
+        - "#dev"
+        - "#infra"
+        - "#home"
+        - "#handoffs"
+        - "#status"
+      trigger: mention
+
+  general:
+    acp:
+      preset: opencode
+    workdir: agents/general
+    matrix:
+      display_name: General
+      rooms:
+        - "#handoffs"
+      trigger: mention
